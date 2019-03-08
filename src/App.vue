@@ -89,12 +89,12 @@
                         </a>
                       </div>
                     </v-flex>
-                    <v-flex md9 lg10 class="contribution_wrap">
+                    <v-flex md9 lg10 id="contribution_wrap">
                       <div
                         v-for="(item, index) in userInfo.contributions"
                         :id="item.title"
                         :key="index"
-                        v-waypoint="{ active: true, callback: onWaypoint}"
+                        v-waypoint="{ active: true, callback: onWaypoint, options: intersectionOptions}"
                       >
                         <contribution :item="item" :index="index+1"/>
                       </div>
@@ -235,7 +235,7 @@ export default {
   data() {
     return {
       intersectionOptions: {
-        root: null,
+        root: document.querySelector("#contribution_wrap"),
         rootMargin: "0px 0px 0px 0px",
         threshold: [1, 1]
       },
@@ -455,8 +455,8 @@ textarea:focus {
 .blue-text {
   color: #3f9cf9;
 }
-.contribution_wrap {
-  max-height: 80vh;
+#contribution_wrap {
+  max-height: 60vh;
   overflow: auto;
   -ms-overflow-style: none;
   overflow: -moz-scrollbars-none;
