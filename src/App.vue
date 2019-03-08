@@ -10,7 +10,7 @@
           </v-flex>
         </v-flex>
         <!-- content -->
-        <!-- backbutton -->
+        <!-- back_button -->
         <v-flex xs12 md1>
           <v-card class="elevation-0 section pa-2">
             <a href="#">
@@ -23,25 +23,26 @@
             </a>
           </v-card>
         </v-flex>
-        <!-- backbutton end -->
+        <!-- back_button end -->
         <!-- main info -->
         <v-flex xs12 md9 lg9>
           <v-card class="elevation-0 section">
-            <v-tabs fixed-tabs slider-color="black">
+            <v-tabs fixed-tabs slider-color="black" v-model="activeTab">
               <v-tab>Full Profile</v-tab>
               <v-tab-item>
+                <!-- user-info -->
                 <div class="profile block">
                   <div class="profile-bio">
                     <v-layout wrap justify-center>
                       <div class="profile_avatar">
                         <v-avatar size="90px">
-                          <img src="@/assets/avatar.jpg" alt="Avatar">
+                          <v-img :src="userInfo.profile.avatar" alt="Avatar"/>
                         </v-avatar>
                       </div>
                       <div class="profile_name">
-                        <div class="title">{{profile.name}}</div>
-                        <div class="body-2">{{profile.position}}</div>
-                        <div class="body-2">{{profile.city}}</div>
+                        <div class="title">{{userInfo.profile.name}}</div>
+                        <div class="body-2">{{userInfo.profile.position}}</div>
+                        <div class="body-2">{{userInfo.profile.city}}</div>
                       </div>
                     </v-layout>
                   </div>
@@ -50,10 +51,10 @@
                     <v-layout wrap>
                       <v-flex xs12 lg6>
                         <!-- jobs -->
-                        <job-map :items="experience"/>
+                        <job-map :items="userInfo.experience"/>
                       </v-flex>
                       <v-flex xs12 lg6>
-                        <mile-stones :items="milestones"></mile-stones>
+                        <mile-stones :items="userInfo.milestones"></mile-stones>
                       </v-flex>
                     </v-layout>
                   </div>
@@ -62,38 +63,39 @@
                   <div class="title pb-3">SARATH'S SKILL STACK</div>
                   <v-layout wrap>
                     <v-flex xs12>
-                      <mile-stones :items="skills"></mile-stones>
+                      <mile-stones :items="userInfo.skills"></mile-stones>
                     </v-flex>
                     <v-flex
                       class="skill_container"
                       xs12
                       sm6
                       md4
-                      v-for="(item, index) in skillStack"
+                      v-for="(item, index) in userInfo.skillStack"
                       :key="index"
                     >
-                      <skill-stack :item="item"></skill-stack>
+                      <skill-stack :item="item" :colors="stackColors[index]"></skill-stack>
                     </v-flex>
                   </v-layout>
                 </div>
                 <div class="contribution block">
                   <v-layout wrap>
                     <v-flex md3 lg2>
-                      <div
-                        class="nav"
-                        v-for="(item,index) in contributionNav"
-                        :key="index"
-                        :id="item.title"
-                      >
-                        <a :href="`#${item.title}`">
+                      <div class="nav" v-for="(item,index) in contributionNav" :key="index">
+                        <a :href="`#${item}`">
                           <div
-                            :class="{ link: true, active: `#${item.title}`==link}"
-                          >{{index+1}}. {{item.title}}</div>
+                            @click="$vuetify.goTo($refs[item][0])"
+                            :class="{ link: true, active: item==activeContribution}"
+                          >{{index+1}}. {{item}}</div>
                         </a>
                       </div>
                     </v-flex>
-                    <v-flex md9 lg10>
-                      <div v-for="(item, index) in contributions" :key="index">
+                    <v-flex md9 lg10 class="contribution_wrap">
+                      <div
+                        v-for="(item, index) in userInfo.contributions"
+                        :id="item.title"
+                        :key="index"
+                        v-waypoint="{ active: true, callback: onWaypoint}"
+                      >
                         <contribution :item="item" :index="index+1"/>
                       </div>
                     </v-flex>
@@ -108,45 +110,48 @@
                       <v-layout wrap justify-center>
                         <div class="profile_avatar">
                           <v-avatar size="90px">
-                            <img src="@/assets/avatar.jpg" alt="Avatar">
+                            <img :src="userInfo.profile.avatar" alt="Avatar">
                           </v-avatar>
                         </div>
                         <div>
-                          <div class="title">{{profile.name}}</div>
+                          <div class="title">{{userInfo.profile.name}}</div>
                           <div class="body-2 blue-text">
                             <v-icon class="mr-1" color="#3f9cf9">mail_outline</v-icon>Share Profile with Hiring Manager
                           </div>
                           <div class="body-2">
                             <v-icon class="mr-1">mail_outline</v-icon>
-                            Email Candidate ({{profile.email}})
+                            Email Candidate ({{userInfo.profile.email}})
                           </div>
                           <div class="body-2">
                             <v-icon class="mr-1">phone</v-icon>
-                            {{profile.phone}}
+                            {{userInfo.profile.phone}}
                           </div>
                         </div>
                       </v-layout>
                     </v-card>
                     <v-card class="elevation-0 block mt-3" color="#f2f3f5">
                       <p class="title">NOTES</p>
-                      <div v-for="(item,index) in notes" :key="index">
+                      <div v-for="(item,index) in userInfo.notes" :key="index">
                         <note :item="item"/>
                       </div>
-                      <textarea/>
+                      <textarea v-model="textNote"/>
                       <div class="tags">
                         <v-layout align-start wrap>
-                          <v-item-group multiple>
-                            <v-flex class="add-tag body-2">Add tags:</v-flex>
-                            <v-item v-for="(item,index) in tags" :key="index">
-                              <v-chip
-                                slot-scope="{ active, toggle }"
-                                :selected="active"
-                                @click="toggle"
-                                class="tag-note"
-                              >{{item}}</v-chip>
-                            </v-item>
-                          </v-item-group>
-                          <v-btn depressed color="#3f9cf9" class="submit-button">Submit</v-btn>
+                          <v-flex class="add-tag body-2">Add tags:</v-flex>
+                          <v-flex>
+                            <span
+                              v-for="(item,index) in tags"
+                              :class="{tag_btn:true, active_tag: tags[index].selected}"
+                              :key="index"
+                              @click="toggleTag(index)"
+                            >{{item.title}}</span>
+                          </v-flex>
+                          <v-btn
+                            depressed
+                            color="#3f9cf9"
+                            @click="submitNote()"
+                            class="submit-button"
+                          >Submit</v-btn>
                         </v-layout>
                       </div>
                     </v-card>
@@ -167,8 +172,13 @@
                         <v-divider></v-divider>
                         <div class="status-history pt-3">
                           <p class="title">Add a New Status</p>
-                          <div class="body-2" v-for="(item,index) in statusHistory" :key="index">
-                            <v-icon class="mr-1" :color="item.color">add</v-icon>
+                          <div
+                            class="body-2"
+                            v-for="(item,index) in userInfo.statusHistory"
+                            :key="index"
+                          >
+                            <v-icon v-if="item.positive" class="mr-1" color="#65c279">add</v-icon>
+                            <v-icon v-else class="mr-1" color="#d43328">add</v-icon>
                             {{item.status}}
                           </div>
                           <div class="body-2">
@@ -185,12 +195,17 @@
         </v-flex>
         <v-flex xs12 md2>
           <v-card class="elevation-0 section text-xs-center text-md-left">
-            <div v-for="(item, index) in rightMenu" :key="index" class="menu_item body-2">
+            <div
+              v-for="(item, index) in rightMenu"
+              v-show="activeTab in item.showOnTabs"
+              :key="index"
+              class="menu_item body-2"
+            >
               <v-icon>{{item.icon}}</v-icon>
               <div>{{item.title}}</div>
             </div>
             <div class="links">
-              <div v-for="(item, index) in links" :key="index">
+              <div v-for="(item, index) in userInfo.links" :key="index">
                 <a :href="item.link">{{item.title}}</a>
               </div>
             </div>
@@ -207,6 +222,7 @@ import MileStones from "./components/MileStones";
 import SkillStack from "./components/SkillStack";
 import Contribution from "./components/Contribution";
 import Note from "./components/Note";
+
 export default {
   name: "App",
   components: {
@@ -218,209 +234,94 @@ export default {
   },
   data() {
     return {
-      profile: {
-        name: "Sarath Lakshman",
-        position: "Sr. Software Engineer",
-        city: "BANGALORE",
-        phone: "991-023-4564",
-        email: "sarath@gmail.com"
+      intersectionOptions: {
+        root: null,
+        rootMargin: "0px 0px 0px 0px",
+        threshold: [1, 1]
       },
-      experience: [
-        {
-          company: "Uber",
-          position: "Sr. Software Engineer",
-          workTime: "1 year 11 months"
-        },
-        {
-          company: "Zlottio",
-          position: "Senior Software Engineer",
-          workTime: "2 year 8 months"
-        },
-        {
-          company: "Accenture",
-          position: "Software Engineer",
-          workTime: "3 year 9 months"
-        },
-        {
-          company: "Google",
-          position: "Software Engineering Intern",
-          workTime: "3 months"
-        }
+      activeTab: 0,
+      activeContribution: "",
+      stackColors: [
+        ["#499658", "#ecf2ed"],
+        ["#bd9e1b", "#f4f1e4"],
+        ["#5c00bb", "#ede9f0"],
+        ["#499658", "#ecf2ed"],
+        ["#bd9e1b", "#f4f1e4"],
+        ["#5c00bb", "#ede9f0"]
       ],
-      milestones: [
-        "<strong>~5 years</strong> work expirience",
-        "<strong>80% time spent in Product companies</strong> (Uber, Google)"
-      ],
-      skills: [
-        "Sarath is a <strong>strong Back End Engineer</strong>, who also possesses moderate skills in Front End development, along with some emerging skills"
-      ],
-      skillStack: [
-        {
-          name: "Back End",
-          colors: ["#499658", "#ecf2ed"],
-          progress: 80,
-          strongest: true,
-          stack: [
-            {
-              name: "Python",
-              stack: "Tensorflow, Pyth.io",
-              topSkill: true
-            },
-            {
-              name: "R",
-              stack: "Razer, Sunnyside, Pallbearer, Lochinbar, approve.io"
-            },
-            {
-              name: "Python",
-              stack: "Tensorflow, Pyth.io",
-              topSkill: true
-            },
-            {
-              name: "R",
-              stack: "Razer, Sunnyside, Pallbearer, Lochinbar, approve.io"
-            },
-            {
-              name: "Python",
-              stack: "Tensorflow, Pyth.io",
-              topSkill: true
-            },
-            {
-              name: "R",
-              stack: "Razer, Sunnyside, Pallbearer, Lochinbar, approve.io"
-            }
-          ]
-        },
-        {
-          name: "Front End",
-          colors: ["#bd9e1b", "#f4f1e4"],
-          progress: 65,
-          stack: [
-            {
-              name: "Javascript",
-              stack: "Animatonics",
-              topSkill: true
-            },
-            {
-              name: "Frontscape",
-              stack: "Frontaffront"
-            }
-          ]
-        },
-        {
-          name: "New technologies",
-          colors: ["#5c00bb", "#ede9f0"],
-          progress: 50,
-          stack: [
-            {
-              name: "Clojure",
-              stack: "Clojureflow"
-            },
-            {
-              name: "Scala",
-              stack: "Scalable, Readjust, Scolio, Study.io, Downtown"
-            }
-          ]
-        }
-      ],
-      contributionNav: [
-        { title: "Python" },
-        { title: "Javascript" },
-        { title: "Scala" },
-        { title: "Clojure" }
-      ],
-      link: "",
-      contributions: [
-        {
-          title: "Python contribution",
-          milestones: [
-            "Contributed to <strong>top open source Python projects (Tensorflow, Superset)</strong> while actively <strong>working at Uber</strong> (2014-2016)",
-            "Contributed to <strong>3 top Python discussions</strong> on Stackoverflow"
-          ],
-          level: 95,
-          questions: 12,
-          answers: 9,
-          commits: 1232
-        },
-        {
-          title: "Python contribution",
-          milestones: [
-            "Contributed to <strong>top open source Python projects (Tensorflow, Superset)</strong> while actively <strong>working at Uber</strong> (2014-2016)",
-            "Contributed to <strong>3 top Python discussions</strong> on Stackoverflow"
-          ],
-          level: 95,
-          questions: 12,
-          answers: 9,
-          commits: 1232
-        }
-      ],
+      userInfo: {},
+      contributionNav: [],
+      textNote: "",
       rightMenu: [
         {
           icon: "bookmark_border",
-          title: "Shortlist"
+          title: "Shortlist",
+          showOnTabs: [0]
         },
         {
           icon: "cancel",
-          title: "Not Interested"
+          title: "Not Interested",
+          showOnTabs: [0]
         },
         {
           icon: "mail_outline",
-          title: "Email Candidate"
+          title: "Email Candidate",
+          showOnTabs: [0, 1]
         },
         {
           icon: "mail_outline",
-          title: "Share Profile"
-        }
-      ],
-      links: [
-        { title: "LinkedIn", link: "https://www.linkedin.com/" },
-        { title: "StackOverflow", link: "https://www.linkedin.com/" },
-        { title: "Github", link: "https://www.linkedin.com/" },
-        { title: "Blog / Website", link: "https://www.linkedin.com/" }
-      ],
-      notes: [
-        {
-          text: "Current salary too high"
-        },
-        {
-          text: "He was not that strong in Python and Swift",
-          tags: [],
-          data: "Tobias Funke • 26 Dec, 2017 • Edit"
-        },
-        {
-          text:
-            "Had good presentation skills but his final answer was a terrible solution",
-          tags: ["Friendly", "Not Responsive"],
-          data: "Hiring Manager • 23 Dec, 2017"
+          title: "Share Profile",
+          showOnTabs: [0, 1]
         }
       ],
       tags: [
-        "friendly",
-        "pleasant to interact",
-        "not responsive",
-        "unprofessional",
-        "late for interview",
-        "didn't show for interview",
-        "frequent resheduling",
-        "unreasonable negotiation",
-        "rude"
-      ],
-      statuses: ["Rejected", "Shortlisted", "Accepted"],
-      statusHistory: [
-        { status: "Teleconference Scheduled", color: "#65c279" },
-        { status: "Face to Face Schedules", color: "#65c279" },
-        { status: "Candidate Not Interesed", color: "#d43328" },
-        { status: "Offer Given", color: "#65c279" },
-        { status: "Offer Declined", color: "#d43328" },
-        { status: "Offer Accepted", color: "#65c279" },
-        { status: "Joined", color: "#65c279" }
+        { title: "friendly", selected: false },
+        { title: "pleasant to interact", selected: false },
+        { title: "not responsive", selected: false },
+        { title: "unprofessional", selected: false },
+        { title: "late for interview", selected: true },
+        { title: "didn't show for interview", selected: false },
+        { title: "frequent resheduling", selected: false },
+        { title: "unreasonable negotiation", selected: false },
+        { title: "rude", selected: false }
       ]
     };
   },
-  mounted() {
-    window.onscroll = function() {
-      this.link = location.hash;
-    };
-    window.onscroll();
+
+  methods: {
+    onWaypoint({ el, going, direction }) {
+      if (going === this.$waypointMap.GOING_IN) {
+        this.activeContribution = el.id;
+      }
+    },
+    toggleTag(index) {
+      this.tags[index].selected = !this.tags[index].selected;
+    },
+    submitNote() {
+      let tagsArray = [];
+      this.tags.forEach(item => {
+        if (item.selected) {
+          tagsArray.push(item.title);
+        }
+      });
+      let payload = {
+        text: this.textNote,
+        data: "Hiring Manager • today",
+        tags: tagsArray
+      };
+      this.userInfo.notes.push(payload);
+      this.tags.forEach(item => (item.selected = false));
+    }
+  },
+  created() {
+    fetch("/data.json")
+      .then(resp => resp.json())
+      .then(json => {
+        this.userInfo = json;
+        json.contributions.forEach(item =>
+          this.contributionNav.push(item.title)
+        );
+      });
   }
 };
 </script>
@@ -553,5 +454,41 @@ textarea:focus {
 }
 .blue-text {
   color: #3f9cf9;
+}
+.contribution_wrap {
+  max-height: 80vh;
+  overflow: auto;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+.contribution_wrap::-webkit-scrollbar {
+  width: 0 !important;
+}
+.links {
+  div {
+    margin-bottom: 10px;
+  }
+  div:last-child {
+    margin-bottom: 0;
+  }
+}
+.tag_btn {
+  align-items: center;
+  border-radius: 28px;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: space-between;
+  height: 24px;
+  padding: 4px 12px;
+  vertical-align: middle;
+  white-space: nowrap;
+  z-index: 1;
+  background-color: #fff;
+  margin: 3px;
+  text-transform: uppercase;
+}
+.active_tag {
+  background-color: #0c0c0c;
+  color: #fff;
 }
 </style>

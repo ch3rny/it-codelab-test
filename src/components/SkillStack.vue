@@ -16,7 +16,7 @@
         class="skill"
         v-for="(item, index) in item.stack"
         :key="index"
-        v-show="index<showNumber"
+        v-show="isPressed || index<showNumber"
       >
         <div v-if="item.topSkill" class="skill-badge" :style="{'background-color': main}">TOP SKILL</div>
         <p class="skill_name font-weight-bold">{{item.name}}</p>
@@ -28,8 +28,8 @@
         color="white"
         block
         v-show="stackLength>showNumber"
-        @click="showNumber=stackLength"
-      >+ {{skillNumber}} MORE</v-btn>
+        @click="isPressed=!isPressed"
+      >{{buttonTitle}}</v-btn>
     </div>
   </div>
 </template>
@@ -38,25 +38,34 @@
 export default {
   name: "SkillStack",
   props: {
-    item: Object
+    item: Object,
+    colors: Array
   },
   data() {
     return {
-      showNumber: 2
+      showNumber: 2,
+      isPressed: false
     };
   },
   computed: {
     main() {
-      return this.item.colors[0];
+      return this.colors[0];
     },
     secondary() {
-      return this.item.colors[1];
+      return this.colors[1];
     },
     stackLength() {
       return this.item.stack.length;
     },
     skillNumber() {
-      return this.item.stack.length - 2;
+      return this.item.stack.length - this.showNumber;
+    },
+    buttonTitle() {
+      if (this.isPressed) {
+        return "LESS";
+      } else {
+        return `+ ${this.skillNumber} MORE`;
+      }
     }
   }
 };

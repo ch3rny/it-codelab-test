@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p class="stack_name title">{{index}}. {{item.title}}</p>
+    <p class="stack_name title">{{index}}. {{item.title}} contribution</p>
     <div class="milestones" v-for="(item, index) in item.milestones" :key="index">
       <div class="marker">
         <v-icon color="#65c279">flag</v-icon>

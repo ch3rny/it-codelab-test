@@ -1,0 +1,189 @@
+{
+  "profile": {
+    "name": "Sarath Lakshman",
+    "position": "Sr. Software Engineer",
+    "city": "BANGALORE",
+    "phone": "991-023-4564",
+    "email": "sarath@gmail.com",
+    "avatar": "https://i.imgur.com/h3P22pi.jpg"
+  },
+  "links": [
+    { "title": "LinkedIn", "link": "https://www.linkedin.com/" },
+    { "title": "StackOverflow", "link": "https://stackoverflow.com" },
+    { "title": "Github", "link": "https://github.com/ch3rny" },
+    { "title": "Blog / Website", "link": "https://www.linkedin.com/" }
+  ],
+  "experience": [
+    {
+      "company": "Uber",
+      "position": "Sr. Software Engineer",
+      "workTime": "1 year 11 months"
+    },
+    {
+      "company": "Zlottio",
+      "position": "Senior Software Engineer",
+      "workTime": "2 year 8 months"
+    },
+    {
+      "company": "Accenture",
+      "position": "Software Engineer",
+      "workTime": "3 year 9 months"
+    },
+    {
+      "company": "Google",
+      "position": "Software Engineering Intern",
+      "workTime": "3 months"
+    }
+  ],
+  "milestones": [
+    "<strong>~5 years</strong> work expirience",
+    "<strong>80% time spent in Product companies</strong> (Uber, Google)"
+  ],
+  "skills": [
+    "Sarath is a <strong>strong Back End Engineer</strong>, who also possesses moderate skills in Front End development, along with some emerging skills"
+  ],
+  "skillStack": [
+    {
+      "name": "Back End",
+      "progress": 80,
+      "strongest": true,
+      "stack": [
+        {
+          "name": "Python",
+          "stack": "Tensorflow, Pyth.io",
+          "topSkill": true
+        },
+        {
+          "name": "R",
+          "stack": "Razer, Sunnyside, Pallbearer, Lochinbar, approve.io"
+        },
+        {
+          "name": "Python",
+          "stack": "Tensorflow, Pyth.io"
+        },
+        {
+          "name": "R",
+          "stack": "Razer, Sunnyside, Pallbearer, Lochinbar, approve.io"
+        },
+        {
+          "name": "Python",
+          "stack": "Tensorflow, Pyth.io"
+        },
+        {
+          "name": "R",
+          "stack": "Razer, Sunnyside, Pallbearer, Lochinbar, approve.io"
+        }
+      ]
+    },
+    {
+      "name": "Front End",
+      "progress": 65,
+      "stack": [
+        {
+          "name": "Javascript",
+          "stack": "Animatonics",
+          "topSkill": true
+        },
+        {
+          "name": "Frontscape",
+          "stack": "Frontaffront"
+        }
+      ]
+    },
+    {
+      "name": "New technologies",
+      "progress": 50,
+      "stack": [
+        {
+          "name": "Clojure",
+          "stack": "Clojureflow"
+        },
+        {
+          "name": "Scala",
+          "stack": "Scalable, Readjust, Scolio, Study.io, Downtown",
+          "topSkill": true
+        }
+      ]
+    }
+  ],
+  "contributions": [
+    {
+      "title": "Python",
+      "milestones": [
+        "Contributed to <strong>top open source Python projects (Tensorflow, Superset)</strong> while actively <strong>working at Uber</strong> (2014-2016)",
+        "Contributed to <strong>3 top Python discussions</strong> on Stackoverflow"
+      ],
+      "level": 95,
+      "questions": 12,
+      "answers": 9,
+      "commits": 1232
+    },
+    {
+      "title": "Javascript",
+      "milestones": [
+        "Contributed to <strong>top open source Python projects (Tensorflow, Superset)</strong> while actively <strong>working at Uber</strong> (2014-2016)",
+        "Contributed to <strong>3 top Python discussions</strong> on Stackoverflow"
+      ],
+      "level": 95,
+      "questions": 12,
+      "answers": 9,
+      "commits": 1232
+    },
+    {
+      "title": "Clojure",
+      "milestones": [
+        "Contributed to <strong>top open source Python projects (Tensorflow, Superset)</strong> while actively <strong>working at Uber</strong> (2014-2016)",
+        "Contributed to <strong>3 top Python discussions</strong> on Stackoverflow"
+      ],
+      "level": 95,
+      "questions": 12,
+      "answers": 9,
+      "commits": 1232
+    },
+    {
+      "title": "Scala",
+      "milestones": [
+        "Contributed to <strong>top open source Python projects (Tensorflow, Superset)</strong> while actively <strong>working at Uber</strong> (2014-2016)",
+        "Contributed to <strong>3 top Python discussions</strong> on Stackoverflow"
+      ],
+      "level": 95,
+      "questions": 12,
+      "answers": 9,
+      "commits": 1232
+    },
+    {
+      "title": "R",
+      "milestones": [
+        "Contributed to <strong>top open source Python projects (Tensorflow, Superset)</strong> while actively <strong>working at Uber</strong> (2014-2016)",
+        "Contributed to <strong>3 top Python discussions</strong> on Stackoverflow"
+      ],
+      "level": 95,
+      "questions": 12,
+      "answers": 9,
+      "commits": 1232
+    }
+  ],
+  "notes": [
+    {
+      "text": "Current salary too high"
+    },
+    {
+      "text": "He was not that strong in Python and Swift",
+      "data": "Tobias Funke • 26 Dec, 2017 • Edit"
+    },
+    {
+      "text": "Had good presentation skills but his final answer was a terrible solution",
+      "tags": ["Friendly", "Not Responsive"],
+      "data": "Hiring Manager • 23 Dec, 2017"
+    }
+  ],
+  "statusHistory": [
+    { "status": "Teleconference Scheduled", "positive": true },
+    { "status": "Face to Face Schedules", "positive": true },
+    { "status": "Candidate Not Interesed", "positive": false },
+    { "status": "Offer Given", "positive": true },
+    { "status": "Offer Declined", "positive": false },
+    { "status": "Offer Accepted", "positive": true },
+    { "status": "Joined", "positive": true }
+  ]
+}
